@@ -1,0 +1,8 @@
+{
+  "app" : {
+    "name": "payment-authenticator",
+    "version": "1.0.0",
+    "description": "Payment Authenticator",
+    "port": 3000
+  }
+}
