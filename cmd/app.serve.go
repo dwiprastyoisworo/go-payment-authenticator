@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/dwiprastyoisworo/go-payment-authenticator/internal/routes"
 	"github.com/dwiprastyoisworo/go-payment-authenticator/lib/config"
 	"github.com/dwiprastyoisworo/go-payment-authenticator/lib/database"
 	"github.com/gofiber/fiber/v3"
@@ -18,7 +19,7 @@ func main() {
 	}
 
 	// setup postgres connection
-	_, err = database.PostgresInit(userConfig, ctx)
+	db, err := database.PostgresInit(userConfig, ctx)
 	if err != nil {
 		// handle error
 		panic(err)
@@ -30,6 +31,14 @@ func main() {
 			AppName:       userConfig.App.Name,
 			CaseSensitive: true,
 		})
+
+	app.Get("/", func(c fiber.Ctx) error {
+		return c.SendString("server is running")
+	})
+
+	// setup routes
+	appRoute := routes.NewRoutes(app, db)
+	appRoute.Authorization()
 
 	// start port
 	err = app.Listen(fmt.Sprintf(":%d", userConfig.App.Port))
