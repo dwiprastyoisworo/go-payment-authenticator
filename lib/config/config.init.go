@@ -9,8 +9,23 @@ type App struct {
 	Port        int    `json:"Port" mapstructure:"port"`
 }
 
+type Postgres struct {
+	Host         string `json:"Host" mapstructure:"host"`
+	Port         int    `json:"Port" mapstructure:"port"`
+	User         string `json:"User" mapstructure:"username"`
+	Password     string `json:"Password" mapstructure:"password"`
+	Database     string `json:"Database" mapstructure:"database"`
+	Schema       string `json:"Schema" mapstructure:"schema"`
+	Ssl          string `json:"Ssl" mapstructure:"ssl"`
+	MaxIdleTime  int    `json:"MaxIdleTime" mapstructure:"max-idle-time"`
+	MaxLifeTime  int    `json:"MaxLifeTime" mapstructure:"max-life-time"`
+	MaxOpenConns int    `json:"MaxOpenConns" mapstructure:"max-open-conns"`
+	MaxIdleConns int    `json:"MaxIdleConns" mapstructure:"max-idle-conns"`
+}
+
 type AppConfig struct {
-	App App `json:"App" mapstructure:"app"`
+	App      App      `json:"App" mapstructure:"app"`
+	Postgres Postgres `json:"Postgres" mapstructure:"postgres"`
 }
 
 func AppConfigInit() (*AppConfig, error) {
