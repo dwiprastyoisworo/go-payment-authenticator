@@ -39,3 +39,34 @@ func (r *Authorization) RequestAuthorization(c fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"url": response})
 
 }
+
+func (r *Authorization) RequestToken(c fiber.Ctx) error {
+	code := c.FormValue("code")
+	clientID := c.FormValue("client_id")
+	clientSecret := c.FormValue("client_secret")
+
+	if code == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "code is required"})
+	}
+
+	if clientID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "client_id is required"})
+	}
+
+	if clientSecret == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "client_secret is required"})
+	}
+
+	req := models.TokenRequest{
+		Code:         code,
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
+	}
+
+	response, err := r.authorizationUsecase.RequestToken(c.Context(), req)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response)
+}

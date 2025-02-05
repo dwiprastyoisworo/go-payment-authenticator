@@ -29,10 +29,15 @@ type Redis struct {
 	DB       int    `json:"DB" mapstructure:"db"`
 }
 
+type Jwt struct {
+	SecretKey string `json:"SecretKey" mapstructure:"secret-key"`
+}
+
 type AppConfig struct {
 	App      App      `json:"App" mapstructure:"app"`
 	Postgres Postgres `json:"Postgres" mapstructure:"postgres"`
 	Redis    Redis    `json:"Redis" mapstructure:"redis"`
+	Jwt      Jwt      `json:"Jwt" mapstructure:"jwt"`
 }
 
 func AppConfigInit() (*AppConfig, error) {

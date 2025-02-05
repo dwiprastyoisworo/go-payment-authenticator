@@ -39,7 +39,7 @@ func main() {
 	})
 
 	// setup routes
-	appRoute := routes.NewRoutes(app, db, redisClient)
+	appRoute := routes.NewRoutes(app, db, redisClient, cfg)
 	appRoute.Authorization()
 
 	// start port
