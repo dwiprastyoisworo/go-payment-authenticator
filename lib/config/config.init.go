@@ -23,9 +23,16 @@ type Postgres struct {
 	MaxIdleConns int    `json:"MaxIdleConns" mapstructure:"max-idle-conns"`
 }
 
+type Redis struct {
+	Host     string `json:"Host" mapstructure:"host"`
+	Password string `json:"Password" mapstructure:"password"`
+	DB       int    `json:"DB" mapstructure:"db"`
+}
+
 type AppConfig struct {
 	App      App      `json:"App" mapstructure:"app"`
 	Postgres Postgres `json:"Postgres" mapstructure:"postgres"`
+	Redis    Redis    `json:"Redis" mapstructure:"redis"`
 }
 
 func AppConfigInit() (*AppConfig, error) {

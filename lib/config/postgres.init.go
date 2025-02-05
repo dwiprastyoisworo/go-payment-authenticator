@@ -1,15 +1,14 @@
-package database
+package config
 
 import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/dwiprastyoisworo/go-payment-authenticator/lib/config"
 	_ "github.com/lib/pq"
 	"time"
 )
 
-func PostgresInit(config *config.AppConfig, context context.Context) (*sql.Conn, error) {
+func (config *AppConfig) PostgresInit(context context.Context) (*sql.Conn, error) {
 	dsn := fmt.Sprintf(
 		"host=%s port=%d user=%s password=%s dbname=%s sslmode=%s search_path=%s",
 		config.Postgres.Host,

@@ -17,5 +17,10 @@
     "max-life-time": 5,
     "max-open-connections": 5,
     "max-idle-connections": 5
+  },
+  "redis": {
+    "host": "localhost:6379",
+    "password": "",
+    "db": 0
   }
 }

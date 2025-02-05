@@ -5,30 +5,32 @@ import (
 	"fmt"
 	"github.com/dwiprastyoisworo/go-payment-authenticator/internal/routes"
 	"github.com/dwiprastyoisworo/go-payment-authenticator/lib/config"
-	"github.com/dwiprastyoisworo/go-payment-authenticator/lib/database"
 	"github.com/gofiber/fiber/v3"
 )
 
 func main() {
 	ctx := context.Background()
 	// setup user config
-	userConfig, err := config.AppConfigInit()
+	cfg, err := config.AppConfigInit()
 	if err != nil {
 		// handle error
 		panic(err)
 	}
 
 	// setup postgres connection
-	db, err := database.PostgresInit(userConfig, ctx)
+	db, err := cfg.PostgresInit(ctx)
 	if err != nil {
 		// handle error
 		panic(err)
 	}
 
+	// setup redis connection
+	redisClient := cfg.RedisInit()
+
 	// start fiber http server
 	app := fiber.New(
 		fiber.Config{
-			AppName:       userConfig.App.Name,
+			AppName:       cfg.App.Name,
 			CaseSensitive: true,
 		})
 
@@ -37,11 +39,11 @@ func main() {
 	})
 
 	// setup routes
-	appRoute := routes.NewRoutes(app, db)
+	appRoute := routes.NewRoutes(app, db, redisClient)
 	appRoute.Authorization()
 
 	// start port
-	err = app.Listen(fmt.Sprintf(":%d", userConfig.App.Port))
+	err = app.Listen(fmt.Sprintf(":%d", cfg.App.Port))
 
 	if err != nil {
 		panic(err)
